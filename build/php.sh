@@ -43,7 +43,6 @@ curl -Ls https://github.com/php/php-src/archive/php-${VERSION_PHP}.tar.gz | tar 
 cd ${DIR_PHP}
 ./buildconf --force
 ./configure \
---disable-cgi \
 --disable-dependency-trackin \
 --disable-opcache \
 --disable-static \
