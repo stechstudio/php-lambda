@@ -6,12 +6,8 @@ DEPS=/deps
 TARGET=/target
 
 #Clean up any old stuff
-sudo rm -rf ${DEPS}
-sudo rm -rf ${TARGET}
-
-# Rebuild our directories
-mkdir -p ${DEPS}
-mkdir -p ${TARGET}
+sudo rm -rf ${DEPS}/*
+sudo rm -rf ${TARGET}/*
 
 # Common build paths and flags
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${TARGET}/lib/pkgconfig"
@@ -22,10 +18,13 @@ export CFLAGS="${FLAGS}"
 export CXXFLAGS="${FLAGS}"
 
 VERSION_CURL=7.54.0
-TAG_CURL=
 DIR_CURL=${DEPS}/curl
 
 DIR_PHP=${DEPS}/php
+
+VERSION_IMAGICK=3.4.3
+DIR_IMAGICK=${DEPS}/imagick
+
 
 echo "BUILDING CURL"
 mkdir -p ${DIR_CURL}
@@ -57,7 +56,6 @@ cd ${DIR_PHP}
 --enable-mbstring \
 --enable-pcntl \
 --enable-pdo \
---enable-shared \
 --enable-shared=yes \
 --enable-static=no \
 --enable-sysvmsg \
@@ -77,9 +75,24 @@ cd ${DIR_PHP}
 --without-pear
 make
 make install
+cp php.ini-production ${TARGET}/lib/php.ini
+
+
+echo "BUILDING IMAGICK PHP Extension"
+mkdir -p ${DIR_IMAGICK}
+curl -Ls https://github.com/mkoppanen/imagick/archive/${VERSION_IMAGICK}.tar.gz| tar xzC ${DIR_IMAGICK} --strip-components=1
+cd ${DIR_IMAGICK}
+${TARGET}/bin/phpize
+./configure --with-php-config=/target/bin/php-config
+make
+make install
+mkdir -p ${TARGET}/modules
+cp ${DIR_IMAGICK}/rpm/imagick.ini ${TARGET}/modules/imagick.ini
+
 
 # Create JSON file of version numbers
 cd ${TARGET}
-echo "{ \"curl\": \"${VERSION_CURL}\", \"php\": \"${VERSION_PHP}\" }" > lib/versions.json
-tar czf /packaging/php-${VERSION_PHP}-lambda.tar.gz include lib bin
+echo "{ \"curl\": \"${VERSION_CURL}\", \"php\": \"${VERSION_PHP}\", \"imagick_module\": \"${VERSION_IMAGICK}\" }" > lib/versions.json
+tar czf /packaging/php-${VERSION_PHP}-lambda.tar.gz include lib bin modules
 advdef --recompress --shrink-insane /packaging/php-${VERSION_PHP}-lambda.tar.gz
+
