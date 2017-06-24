@@ -80,9 +80,6 @@ make install
 
 # Create JSON file of version numbers
 cd ${TARGET}
-echo "{\n\
-  \"curl\": \"${VERSION_CURL}\",\n\
-  \"php\": \"${VERSION_PHP}\",\n\
-}" >lib/versions.json
+echo "{ \"curl\": \"${VERSION_CURL}\", \"php\": \"${VERSION_PHP}\" }" > lib/versions.json
 tar czf /packaging/php-${VERSION_PHP}-lambda.tar.gz include lib bin
 advdef --recompress --shrink-insane /packaging/php-${VERSION_PHP}-lambda.tar.gz
