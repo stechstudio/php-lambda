@@ -1,4 +1,4 @@
-FROM stechstudio/aws-lambda-build:1.0.0
+FROM stechstudio/aws-lambda-build:1.1.0
 LABEL authors="Bubba Hines <bubba@stechstudio.com>"
 
 # Create container suitable for building Lambda binaries
