@@ -9,11 +9,13 @@ RUN sed -i 's/releasever=latest/releaserver=2017.03/' /etc/yum.conf
 
 RUN yum makecache fast
 RUN yum groupinstall -y "Development Tools"  --setopt=group_package_types=mandatory,default
+RUN yum install -y gperf
 RUN yum install -y gtk-doc
 RUN yum install -y texlive
 RUN yum install -y gmp-devel
 RUN yum install -y libssh2-devel
 RUN yum install -y libmount-devel
+RUN yum install -y python27-devel
 RUN yum clean all
 
 
@@ -43,137 +45,16 @@ CMD mkdir -p ${DEPS}
 CMD mkdir -p ${TARGET}
 CMD mkdir -p ${BUILD_LOGS}
 
-
-COPY build/Makefile ${DEPS}/Makefile
-COPY build/*.mk		${DEPS}/
-WORKDIR ${DEPS}
-
-FROM builder as zlib
-
-# https://www.cairographics.org/releases/
-ENV VERSION_CAIRO=1.14.10
-
-# https://github.com/GNOME/libcroco/releases
-ENV VERSION_CROCO=0.6.12
-
-# https://github.com/curl/curl/releases
-ENV VERSION_CURL=7.54.1
-
-# https://sourceforge.net/projects/libexif/files/libexif/
-ENV VERSION_EXIF=0.6.21
-
-# https://sourceforge.net/projects/expat/files/expat/
-ENV VERSION_EXPAT=2.2.1
-
-# https://github.com/libffi/libffi/releases
-ENV VERSION_FFI=3.2.1
-
-# http://www.linuxfromscratch.org/blfs/view/cvs/general/fftw.html
-ENV VERSION_FFTW3=3.3.6-pl2
-
-# https://www.freedesktop.org/wiki/Software/fontconfig/
-ENV VERSION_FONTCONFIG=2.12.1
-
-# https://sourceforge.net/projects/freetype/files/freetype2/
-ENV VERSION_FREETYPE=2.8
-
-# https://github.com/GNOME/gdk-pixbuf/releases
-ENV VERSION_GDKPIXBUF=2.36.6
-
-# https://sourceforge.net/projects/giflib/files/?source=navbar
-ENV VERSION_GIF=5.1.4
-
-# https://github.com/GNOME/glib/releases
-ENV VERSION_GLIB=2.52.0
-
-# http://www.linuxfromscratch.org/blfs/view/cvs/pst/gs.html
-ENV VERSION_GHOSTSCRIPT=9.21
-
-# https://github.com/GNOME/libgsf/releases
-ENV VERSION_GSF=1.14.41
-
-# https://github.com/behdad/harfbuzz/releases
-ENV VERSION_HARFBUZZ=1.4.5
-
-# http://www.linuxfromscratch.org/blfs/view/svn/general/icu.html
-ENV VERSION_ICU=59.1
-
-# http://www.linuxfromscratch.org/blfs/view/cvs/general/imagemagick.html
-ENV VERSION_IMAGEMAGICK=7.0.4-8
-
-# https://github.com/mkoppanen/imagick/releases
-ENV VERSION_IMAGICK=3.4.3
-
-# https://github.com/libjpeg-turbo/libjpeg-turbo/releases
-ENV VERSION_JPGTURBO=1.5.1
-
-# https://github.com/mm2/Little-CMS/releases
-ENV VERSION_LCMS2=2.8
-
-# https://github.com/tbeu/matio/releases
-ENV VERSION_MATIO=1.5.10
-
-# http://www.linuxfromscratch.org/blfs/view/svn/general/nasm.html
-ENV VERSION_NASM=2.13.01
-
-# https://github.com/uclouvain/openjpeg/releases
-ENV VERSION_OPENJPEG=2.1.2
-
-# http://www.linuxfromscratch.org/blfs/view/8.0/postlfs/openssl.html
-ENV VERSION_OPENSSL=1.0.2k
-
-# https://github.com/GStreamer/orc/releases
-ENV VERSION_ORC=0.4.26
-
-# https://github.com/GNOME/pango/releases
-ENV VERSION_PANGO=1.40.6
-
-# http://www.linuxfromscratch.org/blfs/view/svn/general/pcre.html
-ENV VERSION_PCRE=8.40
-
-# https://github.com/jcupitt/php-vips-ext/releases
-ENV VERSION_PHPVIPS=1.0.7
-
-# https://www.cairographics.org/releases/
-ENV VERSION_PIXMAN=0.34.0
-
-# https://libpng.sourceforge.io/
-ENV VERSION_PNG16=1.6.30
-
-# https://poppler.freedesktop.org/
-ENV VERSION_POPPLER=0.56.0
-
-# https://github.com/GNOME/librsvg/releases
-ENV VERSION_SVG=2.40.17
-
-# http://www.linuxfromscratch.org/blfs/view/cvs/general/swig.html
-ENV VERSION_SWIG=3.0.12
-
-# https://github.com/vadz/libtiff/releases
-ENV VERSION_TIFF=4.0.8
-
-# https://github.com/jcupitt/php-vips-ext
-ENV VERSION_EXT_VIPS_PHP=1.0.7
-
-# https://storage.googleapis.com/downloads.webmproject.org/releases/webp/index.html
-ENV VERSION_WEBP=0.6.0
-
-# https://github.com/GNOME/libxslt/releases
-ENV VERSION_XLST=1.1.29
-
-# https://github.com/GNOME/libxml2/releases
-ENV VERSION_XML2=2.9.4
+# Least out-of-sync Sourceforge mirror
+ENV SOURCEFORGE_MIRROR=netix
 
 # https://github.com/madler/zlib/releases
 # http://www.linuxfromscratch.org/lfs/view/development/chapter06/zlib.html
 # Dependencies:
 #   - None
 ENV VERSION_ZLIB=1.2.11
-
-# Least out-of-sync Sourceforge mirror
-ENV SOURCEFORGE_MIRROR=netix
-
-RUN /usr/bin/make
+COPY build/zlib.mk ${DEPS}/zlib.mk
+RUN /usr/bin/make -f ${DEPS}/zlib.mk
 
 
 # http://www.linuxfromscratch.org/blfs/view/svn/general/pcre.html
@@ -181,15 +62,21 @@ RUN /usr/bin/make
 #   - None
 # Depended on by:
 #   - php
-#build pcre
+ENV VERSION_PCRE=8.40
+COPY build/pcre.mk ${DEPS}/pcre.mk
+RUN /usr/bin/make -f ${DEPS}/pcre.mk
 
+# https://github.com/libffi/libffi/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/libffi.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - GLib
-#build ffi
+ENV VERSION_FFI=3.2.1
+COPY build/ffi.mk ${DEPS}/ffi.mk
+RUN /usr/bin/make -f ${DEPS}/ffi.mk
 
+# https://libpng.sourceforge.io/
 # http://www.linuxfromscratch.org/blfs/view/svn/general/libpng.html
 # Dependencies:
 #   - None
@@ -201,62 +88,85 @@ RUN /usr/bin/make
 #   - poppler
 #   - php
 #   - ghostscript
-#build png16
+ENV VERSION_PNG16=1.6.36
+COPY build/png16.mk ${DEPS}/png16.mk
+RUN /usr/bin/make -f ${DEPS}/png16.mk
 
 # http://www.linuxfromscratch.org/blfs/view/svn/general/nasm.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - libjpeg-turbo
-#build nasm
+ENV VERSION_NASM=2.13.01
+COPY build/nasm.mk ${DEPS}/nasm.mk
+RUN /usr/bin/make -f ${DEPS}/nasm.mk
 
+# https://sourceforge.net/projects/libexif/files/libexif/
 # http://www.linuxfromscratch.org/blfs/view/svn/general/libexif.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - php
-#build exif
+ENV VERSION_EXIF=0.6.21
+COPY build/exif.mk ${DEPS}/exif.mk
+RUN /usr/bin/make -f ${DEPS}/exif.mk
 
+# https://github.com/GStreamer/orc/releases
 # https://gstreamer.freedesktop.org/projects/orc.html
 # Dependencies:
 #   - None
 # Depended on by:
-#build orc
+ENV VERSION_ORC=0.4.26
+COPY build/orc.mk ${DEPS}/orc.mk
+RUN /usr/bin/make -f ${DEPS}/orc.mk
 
 # http://www.linuxfromscratch.org/blfs/view/svn/general/icu.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - HarfBuzz
-#build icu
+ENV VERSION_ICU=63.1
+ENV VERSION_ICU_UNDERSCORE=63_1
+COPY build/icu.mk ${DEPS}/icu.mk
+RUN /usr/bin/make -f ${DEPS}/icu.mk
 
+# https://sourceforge.net/projects/giflib/files/?source=navbar
 # http://www.linuxfromscratch.org/blfs/view/8.0/general/giflib.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - libwebp
-#build gif
+ENV VERSION_GIF=5.1.4
+COPY build/gif.mk ${DEPS}/gif.mk
+RUN /usr/bin/make -f ${DEPS}/gif.mk
 
+# https://sourceforge.net/projects/expat/files/expat/
 # http://www.linuxfromscratch.org/blfs/view/7.5/general/expat.html
 # Dependencies:
 #   - None
 # Depended on by:
-#build expat
+ENV VERSION_EXPAT=2.2.1
+COPY build/expat.mk ${DEPS}/expat.mk
+RUN /usr/bin/make -f ${DEPS}/expat.mk
 
-# http://www.linuxfromscratch.org/blfs/view/svn/general/librsvg.html
+# http://www.linuxfromscratch.org/blfs/view/8.0/postlfs/openssl.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - curl
 #   - php
-#build openssl
+ENV VERSION_OPENSSL=1.0.2k
+COPY build/openssl.mk ${DEPS}/openssl.mk
+RUN /usr/bin/make -f ${DEPS}/openssl.mk
 
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/fftw.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - vips
-#build fftw3
+ENV VERSION_FFTW3=3.3.6-pl2
+COPY build/fftw3.mk ${DEPS}/fftw3.mk
+RUN /usr/bin/make -f ${DEPS}/fftw3.mk
 
 ################################################################################
 #
@@ -274,22 +184,31 @@ RUN /usr/bin/make
 #   - fontconfig
 #   - croco
 #   - php
-#build xml2
+# https://github.com/GNOME/libxml2/releases
+ENV VERSION_XML2=2.9.4
+COPY build/xml2.mk ${DEPS}/xml2.mk
+RUN /usr/bin/make -f ${DEPS}/xml2.mk
 
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/swig.html
 # Dependencies:
 #   - pcre
 # Depended on by:
 #   - vips
-#build swig
+ENV VERSION_SWIG=3.0.12
+COPY build/swig.mk ${DEPS}/swig.mk
+RUN /usr/bin/make -f ${DEPS}/swig.mk
 
+# https://www.cairographics.org/releases/
 # http://www.linuxfromscratch.org/blfs/view/svn/general/pixman.html
 # Dependencies:
 #   - LibPNG
 # Depended on by:
 #   - Cairo
-#build pixman
+ENV VERSION_PIXMAN=0.34.0
+COPY build/pixman.mk ${DEPS}/pixman.mk
+RUN /usr/bin/make -f ${DEPS}/pixman.mk
 
+# https://github.com/libjpeg-turbo/libjpeg-turbo/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/libjpeg.html
 # Dependencies:
 #   - nasm
@@ -299,8 +218,11 @@ RUN /usr/bin/make
 #   - poppler
 #   - php
 #   - ghostscript
-#build jpeg-turbo
+ENV VERSION_JPGTURBO=1.5.1
+COPY build/jpeg-turbo.mk ${DEPS}/jpeg-turbo.mk
+RUN /usr/bin/make -f ${DEPS}/jpeg-turbo.mk
 
+# https://github.com/vadz/libtiff/releases
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/libtiff.html
 # Dependencies:
 #   - libjpeg-turbo
@@ -310,15 +232,21 @@ RUN /usr/bin/make
 #   - poppler
 #   - php
 #   - ghostscript
-#build tiff
+ENV VERSION_TIFF=4.0.9
+COPY build/tiff.mk ${DEPS}/tiff.mk
+RUN /usr/bin/make -f ${DEPS}/tiff.mk
 
+# https://github.com/GNOME/libxslt/releases
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/libxslt.html
 # Dependencies:
 #   - libxml2
 # Depended on by:
 #   - php
-#build xlst
+ENV VERSION_XLST=1.1.29
+COPY build/xlst.mk ${DEPS}/xlst.mk
+RUN /usr/bin/make -f ${DEPS}/xlst.mk
 
+# https://github.com/GNOME/glib/releases
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/glib2.html
 # Dependencies:
 #   - libffi
@@ -329,8 +257,11 @@ RUN /usr/bin/make
 #   - HarfBuzz
 #   - Cairo
 #   - croco
-#build glib
+ENV VERSION_GLIB=2.52.0
+COPY build/glib.mk ${DEPS}/glib.mk
+RUN /usr/bin/make -f ${DEPS}/glib.mk
 
+# https://github.com/GNOME/gdk-pixbuf/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/x/gdk-pixbuf.html
 # Dependencies:
 #   - GLib
@@ -338,16 +269,22 @@ RUN /usr/bin/make
 #   - libpng
 # Depended on by:
 #   - libsrvg
-#build gdkpixbuf
+ENV VERSION_GDKPIXBUF=2.36.6
+COPY build/gdkpixbuf.mk ${DEPS}/gdkpixbuf.mk
+RUN /usr/bin/make -f ${DEPS}/gdkpixbuf.mk
 
+# https://github.com/GNOME/libgsf/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/libgsf.html
 # Dependencies:
 #   - GLib
 #   - libxml2
 #   - gdk-pixbuf
 # Depended on by:
-#build gsf
+ENV VERSION_GSF=1.14.41
+COPY build/gsf.mk ${DEPS}/gsf.mk
+RUN /usr/bin/make -f ${DEPS}/gsf.mk
 
+# https://github.com/mm2/Little-CMS/releases
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/lcms2.html
 # Dependencies:
 #   - libjpeg-turbo
@@ -356,8 +293,11 @@ RUN /usr/bin/make
 #   - openjpeg
 #   - poppler
 #   - ghostscript
-#build lcms2
+ENV VERSION_LCMS2=2.8
+COPY build/lcms2.mk ${DEPS}/lcms2.mk
+RUN /usr/bin/make -f ${DEPS}/lcms2.mk
 
+# https://storage.googleapis.com/downloads.webmproject.org/releases/webp/index.html
 # http://www.linuxfromscratch.org/blfs/view/8.0/general/libwebp.html
 # Dependencies:
 #   - libjpeg-turbo
@@ -365,7 +305,9 @@ RUN /usr/bin/make
 #   - libpng
 #   - giflib
 # Depended on by:
-#build webp
+ENV VERSION_WEBP=0.6.0
+COPY build/webp.mk ${DEPS}/webp.mk
+RUN /usr/bin/make -f ${DEPS}/webp.mk
 
 ################################################################################
 #
@@ -374,13 +316,17 @@ RUN /usr/bin/make
 #
 ################################################################################
 
+# https://sourceforge.net/projects/freetype/files/freetype2/
 # http://www.linuxfromscratch.org/blfs/view/svn/general/freetype2.html
 # Dependencies:
 #   - None
 # Depended on by:
 #   - HarfBuzz
-#build freetype
+ENV VERSION_FREETYPE=2.9.1
+COPY build/freetype.mk ${DEPS}/freetype.mk
+RUN /usr/bin/make -f ${DEPS}/freetype.mk
 
+# https://www.freedesktop.org/wiki/Software/fontconfig/
 # http://www.linuxfromscratch.org/blfs/view/svn/general/fontconfig.html
 # Dependencies:
 #   - Freetype
@@ -388,8 +334,11 @@ RUN /usr/bin/make
 # Depended on by:
 #   - harfbuzz
 #   - Cairo
-#build fontconfig
+ENV VERSION_FONTCONFIG=2.13.1
+COPY build/fontconfig.mk ${DEPS}/fontconfig.mk
+RUN /usr/bin/make -f ${DEPS}/fontconfig.mk
 
+# https://www.cairographics.org/releases/
 # http://www.linuxfromscratch.org/blfs/view/8.0/x/cairo.html
 # Dependencies:
 #   - libpng
@@ -401,35 +350,29 @@ RUN /usr/bin/make
 #   - pango
 #   - poppler
 #   - ghostscript
-#build cairo
+ENV VERSION_CAIRO=1.14.10
+COPY build/cairo.mk ${DEPS}/cairo.mk
+RUN /usr/bin/make -f ${DEPS}/cairo.mk
 
+# https://github.com/behdad/harfbuzz/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/harfbuzz.html
 # Dependencies:
 #   - Freetype
 # Depended on by:
 #   - Freetype
-#build harfbuzz
+ENV VERSION_HARFBUZZ=2.2.0
+COPY build/harfbuzz.mk ${DEPS}/harfbuzz.mk
+RUN /usr/bin/make -f ${DEPS}/harfbuzz.mk
 
-# http://www.linuxfromscratch.org/blfs/view/svn/general/freetype2.html
-# Dependencies:
-#   - HarfBuzz
-# Depended on by:
-#   - fontconfig
-#   - php
-#   - ghostscript
-#rm -rf ${DEPS}/freetype
-#build freetype
+# Because, craziness
+RUN  rm -rf ${DEPS}/freetype
+COPY build/freetype.mk ${DEPS}/freetype.mk
+RUN /usr/bin/make -f ${DEPS}/freetype.mk
 
-# http://www.linuxfromscratch.org/blfs/view/svn/general/fontconfig.html
-# Dependencies:
-#   - Freetype
-#   - libxml
-# Depended on by:
-#   - pango
-#   - poppler
-#   - ghostscript
-#rm -rf ${DEPS}/fontconfig
-#build fontconfig
+# Because, craziness
+RUN rm -rf ${DEPS}/fontconfig
+COPY build/fontconfig.mk ${DEPS}/fontconfig.mk
+RUN /usr/bin/make -f ${DEPS}/fontconfig.mk
 
 ################################################################################
 #
@@ -437,29 +380,32 @@ RUN /usr/bin/make
 #
 ################################################################################
 
+# https://github.com/GNOME/pango/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/x/pango.html
 # Dependencies:
 #   - FontConfig
 #   - Cairo
 # Depended on by:
 #   - libsrvg
-#build pango
+ENV VERSION_PANGO=1.40.6
 
+# https://github.com/GNOME/libcroco/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/libcroco.html
 # Dependencies:
 #   - GLib
 #   - libxml
 # Depended on by:
 #   - libsrvg
-#build croco
+ENV VERSION_CROCO=0.6.12
 
+# https://github.com/GNOME/librsvg/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/librsvg.html
 # Dependencies:
 #   - gdk-pixbuf
 #   - croco
 #   - pango
 # Depended on by:
-#build svg
+ENV VERSION_SVG=2.40.17
 
 # http://www.linuxfromscratch.org/blfs/view/8.0/basicnet/curl.html
 # Dependencies:
@@ -467,8 +413,10 @@ RUN /usr/bin/make
 # Depended on by:
 #   - poppler
 #   - php
-#build curl
+# https://github.com/curl/curl/releases
+ENV VERSION_CURL=7.54.1
 
+# https://github.com/uclouvain/openjpeg/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/openjpeg.html
 # Dependencies:
 #   - LCMS
@@ -476,8 +424,9 @@ RUN /usr/bin/make
 #   - libtiff
 # Depended on by:
 #   - poppler
-#build openjpeg
+ENV VERSION_OPENJPEG=2.1.2
 
+# https://poppler.freedesktop.org/
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/poppler.html
 # Dependencies:
 #   - fontconfig
@@ -487,8 +436,9 @@ RUN /usr/bin/make
 #   - openjpeg
 # Depended on by:
 #   - vips
-#build poppler
+ENV VERSION_POPPLER=0.56.0
 
+# http://www.linuxfromscratch.org/blfs/view/cvs/pst/gs.html
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/poppler.html
 # Dependencies:
 #   - freetype
@@ -499,8 +449,8 @@ RUN /usr/bin/make
 #   - cairo
 #   - fontconfig
 # Depended on by:
-#   -
-#build ghostscript
+# 
+ENV VERSION_GHOSTSCRIPT=9.21
 
 # http://www.linuxfromscratch.org/blfs/view/cvs/general/imagemagick.html
 # Dependencies:
@@ -518,7 +468,7 @@ RUN /usr/bin/make
 #   - ghostscript
 # Depended on by:
 #   - vips
-#build imagemagick
+ENV VERSION_IMAGEMAGICK=7.0.4-8
 
 
 # https://github.com/jcupitt/libvips
@@ -541,6 +491,7 @@ RUN /usr/bin/make
 # Depended on by:
 #   - phpvips
 #build vips
+ENV VERSION_VIPS=8.5.6
 
 # http://www.linuxfromscratch.org/blfs/view/svn/general/php.html
 # Dependencies:
@@ -557,14 +508,16 @@ RUN /usr/bin/make
 # Depended on by:
 #   - phpvips
 #build php
+ENV VERSION_PHP=7.1.6 
 
+# https://github.com/jcupitt/php-vips-ext/releases
 # https://github.com/jcupitt/php-vips-ext
 # Dependencies:
 #   - vips
 #   - php
 # Depended on by:
 #   - none
-#build phpvips
+ENV VERSION_PHPVIPS=1.0.7
 
 # Remove the old C++ bindings
 #cd ${TARGET}/include
@@ -577,3 +530,10 @@ RUN /usr/bin/make
 
 # Create .tar.gz
 #packageVips
+
+
+# https://github.com/mkoppanen/imagick/releases
+ENV VERSION_IMAGICK=3.4.3
+
+# https://github.com/tbeu/matio/releases
+ENV VERSION_MATIO=1.5.10
