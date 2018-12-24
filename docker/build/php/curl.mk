@@ -1,14 +1,12 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := make_curl
-
-url_curl = https://github.com/curl/curl/releases/download/curl-${VERSION_CURL//./_}/curl-${VERSION_CURL}.tar.gz
 build_dir_curl = ${DEPS}/curl
 
 fetch_curl:
 	mkdir -p ${build_dir_curl}
 	/usr/bin/git clone https://github.com/curl/curl.git ${build_dir_curl}
 	cd ${build_dir_curl} && \
-	/usr/bin/git checkout curl-${VERSION_CURL_UNDERSCORE}
+	/usr/bin/git checkout curl-$(subst .,_,${VERSION_CURL})
 
 configure_curl:
 	cd ${build_dir_curl} && \
