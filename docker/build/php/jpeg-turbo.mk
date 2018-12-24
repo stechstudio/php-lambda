@@ -9,7 +9,7 @@ fetch_jpeg-turbo:
 
 configure_jpeg-turbo:
 	cd ${build_dir_jpeg-turbo} && \
-	$(CMAKE)-DCMAKE_INSTALL_PREFIX=${TARGET} \
+	$(CMAKE) -DCMAKE_INSTALL_PREFIX=${TARGET} \
       -DCMAKE_BUILD_TYPE=RELEASE  \
       -DENABLE_STATIC=FALSE       \
       -DCMAKE_INSTALL_DOCDIR=${TARGET}/share/doc/libjpeg-turbo-2.0.1 \
@@ -17,8 +17,8 @@ configure_jpeg-turbo:
 
 build_jpeg-turbo:
 	cd ${build_dir_jpeg-turbo} && \
-	$(CMAKE)--build . && \
-  	$(CMAKE)--build . --target install
+	$(CMAKE) --build . && \
+  	$(CMAKE) --build . --target install
 
 version_jpeg-turbo:
 	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg jpeg-turbo ${VERSION_JPGTURBO} '.libraries += {jpeg-turbo: $$jpeg-turbo}' > ${VERSIONS_FILE}
