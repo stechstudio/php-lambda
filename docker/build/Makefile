@@ -1,17 +1,19 @@
-.DEFAULT_GOAL := build_all
+.DEFAULT_GOAL := make_all
+SHELL := /bin/bash
 
--include *.mk
+compiler_build:
+	cd ./compiler && docker build -t sts/lambda/compiler:latest --squash .
 
-build_all: make_zlib \
-		   make_pcre \
-		   make_ffi \
-		   make_png16 \
-		   make_nasm \
-		   make_exif \
-		   make_gif \
-		   make_orc \
-		   make_icu \
-		   make_expat \
-		   make_openssl \
-		   make_fftw3
+compiler_shell:
+	docker run --interactive --tty --entrypoint /bin/bash -e "TERM=xterm-256color" sts/lambda/compiler:latest
 
+php_build:
+	cd ./php && docker build -t sts/lambda/php:latest .
+
+php_shell:
+	docker run --interactive --tty --entrypoint "/bin/bash" -e "TERM=xterm-256color" sts/lambda/php:latest
+
+extension_build:
+	cd ./extension
+
+make_all:
