@@ -6,7 +6,7 @@ build_dir_libssh2 = ${DEPS}/libssh2
 
 fetch_libssh2:
 	mkdir -p ${build_dir_libssh2}
-	/usr/bin/curl -Ls ${url_libssh2} | $(${TARGS} ${url_libssh2}) ${build_dir_libssh2} --strip-components=1
+	/usr/bin/curl -Ls ${url_libssh2} | tar $(shell ${TARGS} ${url_libssh2}) ${build_dir_libssh2} --strip-components=1
 
 configure_libssh2:
 	mkdir -p ${build_dir_libssh2}/bin
