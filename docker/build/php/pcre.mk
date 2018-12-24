@@ -11,7 +11,8 @@ configure_pcre:
 	cd ${build_dir_pcre} && \
 	${build_dir_pcre}/configure \
         --prefix=${TARGET} \
-        --docdir=${TARGET}/share/doc/pcre-8.40 \
+        --docdir=${TARGET}/share/doc/pcre \
+		--enable-utf  \
         --enable-unicode-properties       \
         --enable-pcre16                   \
         --enable-pcre32                   \

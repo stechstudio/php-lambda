@@ -508,3 +508,7 @@ RUN /usr/bin/make -f ${DEPS}/php.mk
 # ENV VERSION_PHPVIPS="1.0.8"
 # COPY ./extensions/phpvips.mk ${DEPS}/phpvips.mk
 # RUN /usr/bin/make -f ${DEPS}/phpvips.mk
+
+FROM sts/lambda/compiler:latest
+WORKDIR ${TARGET}
+COPY --from=0 . .
