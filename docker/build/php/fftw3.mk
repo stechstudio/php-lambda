@@ -10,11 +10,11 @@ fetch_fftw3:
 configure_fftw3:
 	cd ${build_dir_fftw3} && \
 	${build_dir_fftw3}/configure  \
-        --prefix=${TARGET} \
-        --enable-threads \
-        --enable-shared
+	--prefix=${TARGET} \
+	--enable-threads \
+	--enable-shared
 
-build_fftw3:SHELL := /bin/bash
+build_fftw3:
 	cd ${build_dir_fftw3} && \
 	$(MAKE) install
 
