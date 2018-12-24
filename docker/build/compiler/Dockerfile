@@ -53,7 +53,7 @@ ENV \
     FLAGS="--strip-all -Os " \
     CFLAGS="${FLAGS}" \
     CXXFLAGS="${FLAGS}" \
-    LD_LIBRARY_PATH="${TARGET}/lib64:/layer/lib" \
+    LD_LIBRARY_PATH="${TARGET}/lib64:${TARGET}/lib" \
     SOURCEFORGE_MIRROR="netix" \
     PATH="/layer/sbin:/layer/bin:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
     JQ="/usr/bin/jq" \
