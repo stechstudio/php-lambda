@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := make_icu
-url_icu = http://download.icu-project.org/files/icu4c/${VERSION_ICU}/icu4c-${VERSION_ICU//./_}-src.tgz
+url_icu = http://download.icu-project.org/files/icu4c/${VERSION_ICU}/icu4c-$(subst .,_,${VERSION_ICU})-src.tgz
 build_dir_icu = ${DEPS}/icu
 
 fetch_icu:
