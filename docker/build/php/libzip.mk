@@ -19,6 +19,6 @@ build_libzip:
 	$(MAKE)install
 
 version_libzip:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg version_libzip ${VERSION_LIBZIP} '.libraries += {version_libzip: $$$version_libzip}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg version_libzip ${VERSION_LIBZIP} '.libraries += {version_libzip: $$version_libzip}' > ${VERSIONS_FILE}
 
 make_libzip: fetch_libzip configure_libzip build_libzip version_libzip

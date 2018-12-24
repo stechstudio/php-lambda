@@ -19,6 +19,6 @@ build_fftw3:SHELL := /bin/bash
 	$(MAKE) install
 
 version_fftw3:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg fftw3 ${VERSION_FFTW3} '.libraries += {fftw3: $$$fftw3}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg fftw3 ${VERSION_FFTW3} '.libraries += {fftw3: $$fftw3}' > ${VERSIONS_FILE}
 
 make_fftw3: fetch_fftw3 configure_fftw3 build_fftw3 version_fftw3

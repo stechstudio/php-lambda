@@ -41,6 +41,6 @@ build_curl:
 	$(MAKE) install
 
 version_curl:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg curl ${VERSION_CURL} '.libraries += {curl: $$$curl}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg curl ${VERSION_CURL} '.libraries += {curl: $$curl}' > ${VERSIONS_FILE}
 	
 make_curl: fetch_curl configure_curl build_curl version_curl

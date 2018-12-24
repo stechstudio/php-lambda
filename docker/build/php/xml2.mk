@@ -28,6 +28,6 @@ build_xml2:
 	cp xml2-config ${TARGET}/bin/xml2-config
 	
 version_xml2:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg xml2 ${VERSION_XML2} '.libraries += {xml2: $$$xml2}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg xml2 ${VERSION_XML2} '.libraries += {xml2: $$xml2}' > ${VERSIONS_FILE}
 
 make_xml2: fetch_xml2 configure_xml2 build_xml2 version_xml2

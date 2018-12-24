@@ -21,6 +21,6 @@ build_openjpeg:
 	$(MAKE) install
 
 version_openjpeg:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg openjpeg ${VERSION_OPENJPEG} '.libraries += {openjpeg: $$$openjpeg}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg openjpeg ${VERSION_OPENJPEG} '.libraries += {openjpeg: $$openjpeg}' > ${VERSIONS_FILE}
 
 make_openjpeg: fetch_openjpeg configure_openjpeg build_openjpeg version_openjpeg

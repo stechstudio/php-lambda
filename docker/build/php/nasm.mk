@@ -19,6 +19,6 @@ build_nasm:
 	$(MAKE) install
 
 version_nasm:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg nasm ${VERSION_NASM} '.libraries += {nasm: $$$nasm}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg nasm ${VERSION_NASM} '.libraries += {nasm: $$nasm}' > ${VERSIONS_FILE}
 
 make_nasm: fetch_nasm configure_nasm build_nasm version_nasm

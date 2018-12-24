@@ -18,6 +18,6 @@ build_gdkpixbuf:
 	${NINJA} install
 
 version_gdkpixbuf:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg gdkpixbuf ${VERSION_GDKPIXBUF} '.libraries += {gdkpixbuf: $$$gdkpixbuf}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg gdkpixbuf ${VERSION_GDKPIXBUF} '.libraries += {gdkpixbuf: $$gdkpixbuf}' > ${VERSIONS_FILE}
 
 make_gdkpixbuf: fetch_gdkpixbuf configure_gdkpixbuf build_gdkpixbuf version_gdkpixbuf

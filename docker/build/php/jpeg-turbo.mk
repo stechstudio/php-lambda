@@ -21,6 +21,6 @@ build_jpeg-turbo:
   	$(CMAKE)--build . --target install
 
 version_jpeg-turbo:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg jpeg-turbo ${VERSION_JPGTURBO} '.libraries += {jpeg-turbo: $$$jpeg-turbo}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg jpeg-turbo ${VERSION_JPGTURBO} '.libraries += {jpeg-turbo: $$jpeg-turbo}' > ${VERSIONS_FILE}
 
 make_jpeg-turbo: fetch_jpeg-turbo configure_jpeg-turbo build_jpeg-turbo version_jpeg-turbo

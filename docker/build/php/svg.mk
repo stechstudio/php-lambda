@@ -44,6 +44,6 @@ build_svg:
 	$(MAKE) install-strip
 
 version_svg:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg svg ${VERSION_SVG} '.libraries += {svg: $$$svg}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg svg ${VERSION_SVG} '.libraries += {svg: $$svg}' > ${VERSIONS_FILE}
 
 make_svg: fetch_svg configure_svg build_svg version_svg

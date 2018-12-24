@@ -20,6 +20,6 @@ build_harfbuzz:
 	$(MAKE) install-strip
 
 version_harfbuzz:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg harfbuzz ${VERSION_HARFBUZZ} '.libraries += {harfbuzz: $$$harfbuzz}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg harfbuzz ${VERSION_HARFBUZZ} '.libraries += {harfbuzz: $$harfbuzz}' > ${VERSIONS_FILE}
 
 make_harfbuzz: fetch_harfbuzz configure_harfbuzz build_harfbuzz version_harfbuzz

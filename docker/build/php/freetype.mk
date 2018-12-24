@@ -19,6 +19,6 @@ build_freetype:
 	$(MAKE) install
 
 version_freetype:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg freetype ${VERSION_FREETYPE} '.libraries += {freetype: $$$freetype}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg freetype ${VERSION_FREETYPE} '.libraries += {freetype: $$freetype}' > ${VERSIONS_FILE}
 
 make_freetype: fetch_freetype configure_freetype build_freetype version_freetype

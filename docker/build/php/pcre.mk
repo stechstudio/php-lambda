@@ -23,6 +23,6 @@ build_pcre:
 	$(MAKE) install 
 
 version_pcre:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg pcre ${VERSION_PCRE} '.libraries += {pcre: $$$pcre}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg pcre ${VERSION_PCRE} '.libraries += {pcre: $$pcre}' > ${VERSIONS_FILE}
 
 make_pcre: fetch_pcre configure_pcre build_pcre version_pcre

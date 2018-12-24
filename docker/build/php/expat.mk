@@ -19,6 +19,6 @@ build_expat:
 	$(MAKE) install
 
 version_expat:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg expat ${VERSION_EXPAT} '.libraries += {expat: $$$expat}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg expat ${VERSION_EXPAT} '.libraries += {expat: $$expat}' > ${VERSIONS_FILE}
 
 make_expat: fetch_expat configure_expat build_expat version_expat

@@ -20,6 +20,6 @@ build_lcms2:
 	$(MAKE) install-strip
 
 version_lcms2:
-	cat ${VERSIONS_FILE} | jq --arg lcms2 ${VERSION_LCMS2} '.libraries += {lcms2: $$$lcms2}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | jq --arg lcms2 ${VERSION_LCMS2} '.libraries += {lcms2: $$lcms2}' > ${VERSIONS_FILE}
 
 make_lcms2: fetch_lcms2 configure_lcms2 build_lcms2 version_lcms2

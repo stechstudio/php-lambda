@@ -79,6 +79,6 @@ build_php:
     cp php.ini-production ${TARGET}/etc/php/php.ini
 
 version_php:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg php ${VERSION_PHP} '.libraries += {php: $$$php}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg php ${VERSION_PHP} '.libraries += {php: $$php}' > ${VERSIONS_FILE}
 
 make_php: fetch_php configure_php build_php version_php

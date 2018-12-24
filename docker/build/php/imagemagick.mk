@@ -23,6 +23,6 @@ build_imagemagick:
 	$(MAKE) install-strip
 
 version_imagemagick:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg imagemagick ${VERSION_IMAGEMAGICK} '.libraries += {imagemagick: $$$imagemagick}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg imagemagick ${VERSION_IMAGEMAGICK} '.libraries += {imagemagick: $$imagemagick}' > ${VERSIONS_FILE}
 
 make_imagemagick: fetch_imagemagick configure_imagemagick build_imagemagick version_imagemagick

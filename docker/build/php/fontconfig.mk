@@ -21,7 +21,7 @@ configure_fontconfig:
         --sysconfdir=${TARGET}/etc
 
 version_fontconfig:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg fontconfig ${VERSION_FONTCONFIG} '.libraries += {fontconfig: $$$fontconfig}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg fontconfig ${VERSION_FONTCONFIG} '.libraries += {fontconfig: $$fontconfig}' > ${VERSIONS_FILE}
 
 build_fontconfig:
 	cd ${build_dir_fontconfig} && \

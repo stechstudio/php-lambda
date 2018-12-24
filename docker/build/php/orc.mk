@@ -21,6 +21,6 @@ build_ork:
 	rm -rf ${TARGET}/lib/liborc-test-*
 
 version_ork:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg orc ${VERSION_ORC} '.libraries += {orc: $$$orc}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg orc ${VERSION_ORC} '.libraries += {orc: $$orc}' > ${VERSIONS_FILE}
 
 make_ork: fetch_ork configure_ork build_ork version_ork

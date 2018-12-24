@@ -26,6 +26,6 @@ build_poppler:
 	$(MAKE) install
 
 version_poppler:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg poppler ${VERSION_POPPLER} '.libraries += {poppler: $$$poppler}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg poppler ${VERSION_POPPLER} '.libraries += {poppler: $$poppler}' > ${VERSIONS_FILE}
 
 make_poppler: fetch_poppler configure_poppler build_poppler version_poppler

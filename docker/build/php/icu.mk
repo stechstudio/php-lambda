@@ -23,6 +23,6 @@ build_icu:
 	$(MAKE) install
 
 version_icu:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg icu ${VERSION_ICU} '.libraries += {icu: $$$icu}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg icu ${VERSION_ICU} '.libraries += {icu: $$icu}' > ${VERSIONS_FILE}
 
 make_icu: fetch_icu configure_icu build_icu version_icu

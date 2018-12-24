@@ -24,6 +24,6 @@ build_webp:
 	$(MAKE) install-strip
 
 version_webp:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg webp ${VERSION_WEBP} '.libraries += {webp: $$$webp}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg webp ${VERSION_WEBP} '.libraries += {webp: $$webp}' > ${VERSIONS_FILE}
 
 make_webp: fetch_webp configure_webp build_webp version_webp

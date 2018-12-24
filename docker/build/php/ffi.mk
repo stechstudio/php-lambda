@@ -22,6 +22,6 @@ build_ffi:
 	$(MAKE) install-strip
 
 version_ffi:
-	cat ${VERSIONS_FILE} | ${JQ} --arg ffi ${VERSION_FFI} '.libraries += {ffi: $$$ffi}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --arg ffi ${VERSION_FFI} '.libraries += {ffi: $$ffi}' > ${VERSIONS_FILE}
 
 make_ffi: fetch_ffi configure_ffi build_ffi version_ffi

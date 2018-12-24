@@ -20,6 +20,6 @@ build_png16:
 	$(MAKE) install-strip
 
 version_png16:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg png16 ${VERSION_PNG16} '.libraries += {png16: $$$png16}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg png16 ${VERSION_PNG16} '.libraries += {png16: $$png16}' > ${VERSIONS_FILE}
 
 make_png16: fetch_png16 configure_png16 build_png16 version_png16

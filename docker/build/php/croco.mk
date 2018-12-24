@@ -21,6 +21,6 @@ build_croco:
 	$(MAKE) install-strip
 
 version_croco:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg croco ${VERSION_CROCO} '.libraries += {croco: $$$croco}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg croco ${VERSION_CROCO} '.libraries += {croco: $$croco}' > ${VERSIONS_FILE}
 
 make_croco: fetch_croco configure_croco build_croco version_croco

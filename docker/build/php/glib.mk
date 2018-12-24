@@ -24,6 +24,6 @@ build_glib:
 	$(MAKE) install-strip
 
 version_glib:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg glib ${VERSION_GLIB} '.libraries += {glib: $$$glib}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg glib ${VERSION_GLIB} '.libraries += {glib: $$glib}' > ${VERSIONS_FILE}
 
 make_glib: fetch_glib configure_glib build_glib version_glib
