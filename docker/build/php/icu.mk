@@ -9,7 +9,9 @@ fetch_icu:
 
 configure_icu:
 	cd ${build_dir_icu}/source && \
-	${build_dir_icu}/source/configure \
+	chmod +x runConfigureICU configure install-sh && \
+	./runConfigureICU Linux && \
+	${build_dir_icu}/source/./configure \
         --prefix=${TARGET} \
         --enable-shared \
         --with-library-bits=64 \
