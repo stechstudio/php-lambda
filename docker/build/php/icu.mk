@@ -22,7 +22,7 @@ configure_icu:
 
 build_icu:
 	cd ${build_dir_icu}/source && \
-	$(MAKE) install
+	CXXFLAGS="-std=c++11 ${FLAGS}" $(MAKE) install
 
 version_icu:
 	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg icu ${VERSION_ICU} '.libraries += {icu: $$icu}' > ${VERSIONS_FILE}
