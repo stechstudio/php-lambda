@@ -10,7 +10,7 @@ fetch_glib:
 configure_glib:
 	LD_LIBRARY_PATH= yum install -y libmount-devel
 	cd ${build_dir_glib} && \
-	${build_dir_glib}/autogen.sh --prefix=${TARGET} --with-pcre=internal --enable-shared --disable-static --disable-dependency-tracking --cache-file=glib.cache
+	${build_dir_glib}/autogen.sh --prefix=${TARGET} --with-pcre=system --enable-shared --disable-static --disable-dependency-tracking --cache-file=glib.cache
 
 build_glib:
 	cd ${build_dir_glib} && \
