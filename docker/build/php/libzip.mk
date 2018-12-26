@@ -10,13 +10,13 @@ fetch_libzip:
 
 configure_libzip:
 	cd ${build_dir_libzip}/build && \
-	c$(MAKE).. \
+	$(CMAKE) .. \
 	-DCMAKE_INSTALL_PREFIX=${TARGET} \
 	-DCMAKE_BUILD_TYPE=RELEASE 
 
 build_libzip:
 	cd ${build_dir_libzip}/build && \
-	$(MAKE)install
+	$(MAKE) install
 
 version_libzip:
 	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg version_libzip ${VERSION_LIBZIP} '.libraries += {version_libzip: $$version_libzip}' > ${VERSIONS_FILE}
