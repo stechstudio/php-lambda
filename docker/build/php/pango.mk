@@ -21,6 +21,6 @@ build_pango:
 	${NINJA} install
 
 version_pango:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg pango${VERSION_PANGO} '.libraries += {pango: $$pango}' > ${VERSIONS_FILE}
+	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg pango ${VERSION_PANGO} '.libraries += {pango: $$pango}' > ${VERSIONS_FILE}
 
 make_pango: fetch_pango configure_pango build_pango version_pango
