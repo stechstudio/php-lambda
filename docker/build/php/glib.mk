@@ -10,14 +10,7 @@ fetch_glib:
 configure_glib:
 	LD_LIBRARY_PATH= yum install -y libmount-devel
 	cd ${build_dir_glib} && \
-	${build_dir_glib}/autogen.sh && \
-	CPPFLAGS="-I${TARGET}/include -I/usr/include" \${build_dir_glib}/configure \
-        --cache-file=glib.cache  \
-        --prefix=${TARGET} \
-        --enable-shared \
-        --disable-static \
-        --disable-dependency-tracking \
-        --with-pcre=system
+	${build_dir_glib}/autogen.sh --prefix=${TARGET} --with-pcre=internal --enable-shared --disable-static --disable-dependency-tracking --cache-file=glib.cache
 
 build_glib:
 	cd ${build_dir_glib} && \
