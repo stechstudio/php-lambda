@@ -10,7 +10,11 @@ fetch_zlib:
 
 configure_zlib:
 	cd ${build_dir_zlib} && \
-	${build_dir_zlib}/configure --prefix=${TARGET} --uname=linux
+	make distclean && \
+	${build_dir_zlib}/configure \
+		--prefix=${TARGET} \
+		--eprefix=${TARGET} \
+		--64
 
 build_zlib:
 	cd ${build_dir_zlib} && \
