@@ -4,6 +4,7 @@ FROM sts/lambda/compiler:latest
 # Needed for:
 #   - openssl
 #   - curl
+#   - pcre
 ENV VERSION_ZLIB="1.2.11"
 COPY ./zlib.mk ${DEPS}/zlib.mk
 RUN /usr/bin/make -f ${DEPS}/zlib.mk
@@ -37,10 +38,22 @@ ENV VERSION_CURL="7.63.0"
 COPY ./curl.mk ${DEPS}/curl.mk
 RUN /usr/bin/make -f ${DEPS}/curl.mk
 
-# https://www.pcre.org/
+# https://github.com/unicode-org/icu/releases
 # Needs:
 #   - None
 # Needed by:
+#   - PCRE
+#   - HarfBuzz
+ENV VERSION_ICU="63.1"
+COPY ./icu.mk ${DEPS}/icu.mk
+RUN /usr/bin/make -f ${DEPS}/icu.mk
+
+# https://www.pcre.org/
+# Needs:
+#   - zlib
+#   - ICU
+# Needed by:
+#   - glib
 #   - php
 ENV VERSION_PCRE="8.42"
 COPY ./pcre.mk ${DEPS}/pcre.mk
@@ -100,14 +113,6 @@ ENV VERSION_ORC="0.4.28"
 COPY ./orc.mk ${DEPS}/orc.mk
 RUN /usr/bin/make -f ${DEPS}/orc.mk
 
-# http://www.linuxfromscratch.org/blfs/view/svn/general/icu.html
-# Needs:
-#   - None
-# Needed by:
-#   - HarfBuzz
-ENV VERSION_ICU="63.1"
-COPY ./icu.mk ${DEPS}/icu.mk
-RUN /usr/bin/make -f ${DEPS}/icu.mk
 
 # https://sourceforge.net/projects/giflib/files/?source=navbar
 # http://www.linuxfromscratch.org/blfs/view/8.0/general/giflib.html
