@@ -10,11 +10,10 @@ fetch_openjpeg:
 
 configure_openjpeg:
 	cd ${build_dir_openjpeg}/build && \
-	$(CMAKE).. \
+	$(CMAKE) .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=${TARGET} \
-        -DBUILD_SHARED_LIBS:bool=on \
-        -DCMAKE_C_FLAGS="${FLAGS}"
+        -DBUILD_SHARED_LIBS:bool=on
 
 build_openjpeg:
 	cd ${build_dir_openjpeg}/build && \
