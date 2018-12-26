@@ -4,7 +4,7 @@ url_cairo = http://cairographics.org/releases/cairo-${VERSION_CAIRO}.tar.xz
 build_dir_cairo = ${DEPS}/cairo
 
 fetch_cairo:
-	${MKDIR} -p ${build_dir_cairo}
+	mkdir -p ${build_dir_cairo}
 	${CURL} -Ls ${url_cairo} | tar $(shell ${TARGS} ${url_cairo}) ${build_dir_cairo} --strip-components=1
 
 configure_cairo:
