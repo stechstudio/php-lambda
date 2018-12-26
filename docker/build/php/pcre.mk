@@ -16,8 +16,7 @@ configure_pcre:
         --enable-unicode-properties       \
         --enable-pcre16                   \
         --enable-pcre32                   \
-        --enable-pcregrep-libz            \
-        --disable-static
+        --enable-pcregrep-libz            
 
 build_pcre:
 	cd ${build_dir_pcre} && \
