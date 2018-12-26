@@ -10,7 +10,7 @@ fetch_gdkpixbuf:
 configure_gdkpixbuf:
 	cd ${build_dir_gdkpixbuf} && \
 	touch gdk-pixbuf/loaders.cache && \
-    ${MESON} _build . --prefix=${TARGET} -Dx11=false -Dbuiltin_loaders=png,jpeg -Dgir=false -Dman=false -Dinstalled_tests=false 
+    ${MESON} build . --prefix=${TARGET} -Dx11=false -Dbuiltin_loaders=png,jpeg -Dgir=false -Dman=false -Dinstalled_tests=false 
 
 build_gdkpixbuf:
 	cd ${build_dir_gdkpixbuf}/_build && \
