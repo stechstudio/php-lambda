@@ -16,4 +16,4 @@ php_shell:
 extension_build:
 	cd ./extension
 
-make_all:
+make_all: compiler_build php_build extension_build

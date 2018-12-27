@@ -9,7 +9,6 @@ fetch_php:
 	${CURL} -Ls ${url_php} | tar $(shell ${TARGS} ${url_php}) ${build_dir_php} --strip-components=1
 
 configure_php:
-	LD_LIBRARY_PATH= yum install -y gmp-devel readline-devel
 	cd ${build_dir_php} && \
 	${build_dir_php}/buildconf --force && \
 	CPPFLAGS="-I${TARGET}/include -I/usr/include" ${build_dir_php}/configure \
@@ -18,7 +17,7 @@ configure_php:
         --exec-prefix=${TARGET} \
         --enable-option-checking=fatal \
         --with-config-file-path=${TARGET}/etc/php \
-        --with-config-file-scan-dir=${TARGET}/modules \
+        --with-config-file-scan-dir=${TARGET}/etc/php/config.d:/var/task/php/config.d \
         --disable-fpm \
         --enable-cgi \
         --enable-cli \
