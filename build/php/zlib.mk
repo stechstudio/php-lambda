@@ -22,6 +22,9 @@ build_zlib:
 	/bin/rm ${TARGET}/lib/libz.a
 
 version_zlib:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg zlib ${VERSION_ZLIB} '.libraries += {zlib: $$zlib}' > ${VERSIONS_FILE}
-
+	/usr/local/bin/versions.py add -s libraries -i zlib -v ${VERSION_ZLIB}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/zipcmp -v ${VERSION_ZLIB}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/zipmerge -v ${VERSION_ZLIB}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/ziptool -v ${VERSION_ZLIB}
+	
 make_zlib: fetch_zlib configure_zlib build_zlib version_zlib

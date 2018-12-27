@@ -34,6 +34,6 @@ build_imagick:
 	/usr/bin/make install
 
 version_imagick:
-	cat ${VERSIONS_FILE} | ${jq_x} --unbuffered --arg imagick ${VERSION_IMAGICK} '.extensions += {imagick: $imagick}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i imagick -v ${VERSION_IMAGICK}
 
 make_imagick: fetch_imagick configure_imagick build_imagick version_imagick

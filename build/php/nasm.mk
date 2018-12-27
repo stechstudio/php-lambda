@@ -19,6 +19,8 @@ build_nasm:
 	$(MAKE) install
 
 version_nasm:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg nasm ${VERSION_NASM} '.libraries += {nasm: $$nasm}' > ${VERSIONS_FILE}
-
+	/usr/local/bin/versions.py add -s libraries -i nasm -v ${VERSION_NASM}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/nasm -v ${VERSION_NASM}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/ndisam -v ${VERSION_NASM}
+	
 make_nasm: fetch_nasm configure_nasm build_nasm version_nasm

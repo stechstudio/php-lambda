@@ -1,5 +1,8 @@
 FROM sts/lambda/compiler:latest
 
+COPY helpers/versions.py /usr/local/bin/versions.py
+RUN /usr/local/bin/versions.py init
+ 
 # We are going to want these include files later.
 RUN LD_LIBRARY_PATH= yum install -y gmp-devel readline-devel
 
@@ -125,9 +128,6 @@ ENV VERSION_PHP="7.3.0"
 COPY ./php.mk ${DEPS}/php.mk
 RUN /usr/bin/make -f ${DEPS}/php.mk
 
-# Cleanup what we do not need.
-RUN rm -rf share/doc/ share/man/ share/gtk-doc
-
 # https://github.com/jcupitt/php-vips-ext/releases
 # https://github.com/jcupitt/php-vips-ext
 # Needs:
@@ -141,4 +141,5 @@ RUN rm -rf share/doc/ share/man/ share/gtk-doc
 
 FROM sts/lambda/compiler:latest
 WORKDIR ${TARGET}
+COPY --from=0 /versions /versions
 COPY --from=0 ${TARGET} ${TARGET}

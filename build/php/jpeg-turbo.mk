@@ -21,6 +21,12 @@ build_jpeg-turbo:
   	$(CMAKE) --build . --target install
 
 version_jpeg-turbo:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg jpeg_turbo ${VERSION_JPGTURBO} '.libraries += {jpeg_turbo: $$jpeg_turbo}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i jpeg_turbo -v ${VERSION_JPGTURBO}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/cjpeg -v ${VERSION_JPGTURBO}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/djpeg -v ${VERSION_JPGTURBO}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/jpegtran -v ${VERSION_JPGTURBO}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/rdjpgcom -v ${VERSION_JPGTURBO}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/tjbench -v ${VERSION_JPGTURBO}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/wrjpgcom -v ${VERSION_JPGTURBO}
 
 make_jpeg-turbo: fetch_jpeg-turbo configure_jpeg-turbo build_jpeg-turbo version_jpeg-turbo

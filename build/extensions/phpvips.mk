@@ -36,6 +36,6 @@ build_phpvips:
 	echo "extension=vips.so" > ${TARGET}/modules/ext-phpvips.ini
 
 version_phpvips:
-	cat ${VERSIONS_FILE} | ${jq_x} --unbuffered --arg phpvips ${VERSION_EXT_VIPS_PHP} '.extensions += {phpvips: $phpvips}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i phpvips -v ${VERSION_EXT_VIPS_PHP}
 
 make_phpvips: fetch_phpvips configure_phpvips build_phpvips version_phpvips

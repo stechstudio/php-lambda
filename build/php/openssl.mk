@@ -25,6 +25,8 @@ build_openssl:
 	/usr/bin/curl -k -o ${CA_BUNDLE} ${CA_BUNDLE_SOURCE}
 	
 version_openssl:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg openssl ${VERSION_OPENSSL} '.libraries += {openssl: $$openssl}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i openssl -v ${VERSION_OPENSSL}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/c_rehash -v ${VERSION_OPENSSL}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/openssl -v ${VERSION_OPENSSL}
 
 make_openssl: fetch_openssl configure_openssl build_openssl version_openssl

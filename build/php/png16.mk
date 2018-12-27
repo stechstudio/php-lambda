@@ -20,6 +20,9 @@ build_png16:
 	$(MAKE) install-strip
 
 version_png16:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg png16 ${VERSION_PNG16} '.libraries += {png16: $$png16}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i libpng16 -v ${VERSION_PNG16}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/libpng16-config -v ${VERSION_PNG16}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/png-fix-itxt -v ${VERSION_PNG16}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/pngfix -v ${VERSION_PNG16}
 
 make_png16: fetch_png16 configure_png16 build_png16 version_png16

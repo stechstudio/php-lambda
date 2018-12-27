@@ -10,16 +10,16 @@ fetch_xml2:
 configure_xml2:
 	cd ${build_dir_xml2} && \
 	${build_dir_xml2}/configure \
-        --prefix=${TARGET} \
-        --exec-prefix=${TARGET} \
-        --with-sysroot=${TARGET} \
-        --enable-shared \
-        --disable-static \
-        --with-html \
-        --with-history \
-        --enable-ipv6=no \
-        --with-icu \
-        --with-zlib=${TARGET} \
+		--prefix=${TARGET} \
+		--exec-prefix=${TARGET} \
+		--with-sysroot=${TARGET} \
+		--enable-shared \
+		--disable-static \
+		--with-html \
+		--with-history \
+		--enable-ipv6=no \
+		--with-icu \
+		--with-zlib=${TARGET} \
 		--without-python
 
 build_xml2:
@@ -28,6 +28,9 @@ build_xml2:
 	cp xml2-config ${TARGET}/bin/xml2-config
 	
 version_xml2:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg xml2 ${VERSION_XML2} '.libraries += {xml2: $$xml2}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i xml2 -v ${VERSION_XML2}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/xml2-config -v ${VERSION_XML2}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/xmlcatalog -v ${VERSION_XML2}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/xmllint -v ${VERSION_XML2}
 
 make_xml2: fetch_xml2 configure_xml2 build_xml2 version_xml2

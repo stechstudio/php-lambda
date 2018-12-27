@@ -24,6 +24,10 @@ build_webp:
 	$(MAKE) install-strip
 
 version_webp:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg webp ${VERSION_WEBP} '.libraries += {webp: $$webp}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i webp -v ${VERSION_WEBP}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/cwebp -v ${VERSION_WEBP}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/dwebp -v ${VERSION_WEBP}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/webpinfo -v ${VERSION_WEBP}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/webpmux -v ${VERSION_WEBP}
 
 make_webp: fetch_webp configure_webp build_webp version_webp

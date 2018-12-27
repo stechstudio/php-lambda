@@ -75,9 +75,13 @@ build_php:
 	$(MAKE) && \
 	$(MAKE) install && \
 	mkdir -p ${TARGET}/etc/php  && \
-    cp php.ini-production ${TARGET}/etc/php/php.ini
+    cp php.ini-production ${TARGET}/etc/php/php.ini && \
+    rm -f /opt/bref/bin/phar*
 
 version_php:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg php ${VERSION_PHP} '.libraries += {php: $$php}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/php -v ${VERSION_PHP}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/php-cgi -v ${VERSION_PHP}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/phpize -v ${VERSION_PHP}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/php-config -v ${VERSION_PHP}
 
 make_php: fetch_php configure_php build_php version_php

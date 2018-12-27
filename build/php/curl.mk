@@ -39,6 +39,7 @@ build_curl:
 	$(MAKE) install
 
 version_curl:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg curl ${VERSION_CURL} '.libraries += {curl: $$curl}' > ${VERSIONS_FILE}
-	
+	/usr/local/bin/versions.py add -s libraries -i curl -v ${VERSION_CURL}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/curl -v ${VERSION_CURL}
+	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/curl-config -v ${VERSION_CURL}
 make_curl: fetch_curl configure_curl build_curl version_curl

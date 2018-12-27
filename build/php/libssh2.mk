@@ -23,6 +23,6 @@ build_libssh2:
 	$(CMAKE) --build . --target install
 
 version_libssh2:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg libssh2 ${VERSION_LIBSSH2} '.libraries += {libssh2: $$libssh2}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i libssh2 -v ${VERSION_LIBSSH2}
 	
 make_libssh2: fetch_libssh2 configure_libssh2 build_libssh2 version_libssh2
