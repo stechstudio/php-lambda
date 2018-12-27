@@ -109,6 +109,17 @@ ENV VERSION_WEBP="1.0.1"
 COPY ./webp.mk ${DEPS}/webp.mk
 RUN /usr/bin/make -f ${DEPS}/webp.mk
 
+# 
+# https://github.com/postgres/postgres/releases
+# Needs:
+#   - 
+# Needed by:
+#   - php
+ENV VERSION_POSTGRES="9.6.11"
+COPY ./postgres.mk ${DEPS}/postgres.mk
+RUN /usr/bin/make -f ${DEPS}/postgres.mk
+
+
 # https://github.com/php/php-src/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/php.html
 # Needs:
@@ -126,7 +137,7 @@ RUN /usr/bin/make -f ${DEPS}/webp.mk
 #build php
 ENV VERSION_PHP="7.3.0"
 COPY ./php.mk ${DEPS}/php.mk
-RUN /usr/bin/make -f ${DEPS}/php.mk
+RUN /usr/bin/make -f ${DEPS}/php.mk 
 
 # https://github.com/jcupitt/php-vips-ext/releases
 # https://github.com/jcupitt/php-vips-ext
@@ -141,5 +152,6 @@ RUN /usr/bin/make -f ${DEPS}/php.mk
 
 FROM sts/lambda/compiler:latest
 WORKDIR ${TARGET}
-COPY --from=0 /versions /versions
+COPY --from=0 /versions.json /versions.json
 COPY --from=0 ${TARGET} ${TARGET}
+COPY helpers/versions.py /usr/local/bin/versions.py
