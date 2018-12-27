@@ -13,8 +13,11 @@ php_build:
 php_shell:
 	docker run --interactive --tty -v ${PWD}:/host --entrypoint "/bin/bash" -e "TERM=xterm-256color" sts/lambda/php:latest
 
-extension_build:
-	cd ./extension
+extensions_build:
+	cd ./extensions && docker build -t sts/lambda/ext:latest .
+
+extensions_shell:
+	docker run --interactive --tty -v ${PWD}:/host --entrypoint "/bin/bash" -e "TERM=xterm-256color" sts/lambda/ext:latest
 
 all: compiler_build php_build extension_build
 
