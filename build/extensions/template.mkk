@@ -1,0 +1,24 @@
+SHELL := /bin/bash
+.DEFAULT_GOAL := make_<<TOKEN>>
+
+url_<<TOKEN>> = 
+upper_<<TOKEN>> = $(shell echo <<TOKEN>>| awk '{print toupper($0)}')
+build_dir_<<TOKEN>> = ${DEPS}/<<TOKEN>>
+
+fetch_<<TOKEN>>:
+	mkdir -p ${build_dir_<<TOKEN>>}
+	curl -Ls ${url_<<TOKEN>>} | tar $(shell ${TARGS} ${url_<<TOKEN>>}) ${build_dir_<<TOKEN>>} --strip-components=1
+
+configure_<<TOKEN>>:
+	cd ${build_dir_<<TOKEN>>} && \
+	/opt/bref/bin/phpize && \
+	${build_dir_<<TOKEN>>}/configure --prefix=${TARGET}  --with-php-config=/opt/bref/bin/php-config
+
+build_<<TOKEN>>:
+	cd ${build_dir_<<TOKEN>>} && \
+	/usr/bin/make install
+
+version_<<TOKEN>>:
+	/usr/local/bin/versions.py add -s extensions -i <<TOKEN>> -v <<VERSION_TOKEN>>
+
+make_<<TOKEN>>: fetch_<<TOKEN>> configure_<<TOKEN>> build_<<TOKEN>> version_<<TOKEN>>
