@@ -20,11 +20,11 @@ configure_fontconfig:
         --with-expat-lib=${TARGET}/lib \
         --sysconfdir=${TARGET}/etc
 
-version_fontconfig:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg fontconfig ${VERSION_FONTCONFIG} '.libraries += {fontconfig: $$fontconfig}' > ${VERSIONS_FILE}
-
 build_fontconfig:
 	cd ${build_dir_fontconfig} && \
 	$(MAKE) install-strip
+
+version_fontconfig:
+	/usr/local/bin/versions.py add -s libraries -i fontconfig -v ${VERSION_FONTCONFIG}
 
 make_fontconfig: fetch_fontconfig configure_fontconfig build_fontconfig version_fontconfig

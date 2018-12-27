@@ -19,6 +19,6 @@ build_gif:
 	$(MAKE) install-strip
 
 version_gif:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg gif ${VERSION_GIF} '.libraries += {gif: $$gif}' > ${VERSIONS_FILE}
+/usr/local/bin/versions.py add -s libraries -i gif -v ${VERSION_GIF}
 
 make_gif: fetch_gif configure_gif build_gif version_gif

@@ -22,6 +22,6 @@ build_swig:
 	$(MAKE) install
 
 version_swig:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg swig ${VERSION_SWIG} '.libraries += {swig: $$swig}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i swig -v ${VERSION_SWIG}
 
 make_swig: fetch_swig configure_swig build_swig version_swig

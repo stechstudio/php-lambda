@@ -31,6 +31,6 @@ build_ghostscript:
     /usr/bin/fc-cache -v ${TARGET}/share/ghostscript/fonts/
 
 version_ghostscript:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg ghostscript ${VERSION_GHOSTSCRIPT} '.libraries += {ghostscript: $$ghostscript}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i ghostscript -v ${VERSION_GHOSTSCRIPT}
 
 make_ghostscript: fetch_ghostscript configure_ghostscript build_ghostscript version_ghostscript

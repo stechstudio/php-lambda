@@ -26,6 +26,6 @@ build_poppler:
 	$(MAKE) install
 
 version_poppler:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg poppler ${VERSION_POPPLER} '.libraries += {poppler: $$poppler}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i poppler -v ${VERSION_POPPLER}
 
 make_poppler: fetch_poppler configure_poppler build_poppler version_poppler

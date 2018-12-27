@@ -22,6 +22,6 @@ build_pixman:
 	$(MAKE) install-strip
 
 version_pixman:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg pixman ${VERSION_PIXMAN} '.libraries += {pixman: $$pixman}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i pixman -v ${VERSION_PIXMAN}
 
 make_pixman: fetch_pixman configure_pixman build_pixman version_pixman

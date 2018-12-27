@@ -1,25 +1,13 @@
+SHELL := /bin/bash
 .DEFAULT_GOAL := make_<<TOKEN>>
 
 url_<<TOKEN>> = 
-upper_<<TOKEN>> = $(echo <<TOKEN>>| awk '{print toupper($0)}')
+upper_<<TOKEN>> = $(shell echo <<TOKEN>>| awk '{print toupper($0)}')
 build_dir_<<TOKEN>> = ${DEPS}/<<TOKEN>>
-ifeq ($(suffix $(url_<<TOKEN>>)), .gz)
-	<<TOKEN>>_args=xzC
-else
-	ifeq ($(suffix $(url_<<TOKEN>>)), tgz)
-		<<TOKEN>>_args=xzC
-	else
-		ifeq ($(suffix $(url_<<TOKEN>>)), bz2)
-			<<TOKEN>>_args=xjC
-		else
-			<<TOKEN>>_args=xJC
-		endif
-	endif
-endif
 
 fetch_<<TOKEN>>:
 	mkdir -p ${build_dir_<<TOKEN>>}
-	curl -Ls ${url_<<TOKEN>>} | tar $(<<TOKEN>>_args) ${build_dir_<<TOKEN>>} --strip-components=1
+	curl -Ls ${url_<<TOKEN>>} | tar $(shell ${TARGS} ${url_<<TOKEN>>}) ${build_dir_<<TOKEN>>} --strip-components=1
 
 configure_<<TOKEN>>:
 	cd ${build_dir_<<TOKEN>>} && \
@@ -30,6 +18,6 @@ build_<<TOKEN>>:
 	/usr/bin/make install
 
 version_<<TOKEN>>:
-	cat ${VERSIONS_FILE} | ${jq_x} --unbuffered --arg version_<<TOKEN>> ${VERSION}_${upper_<<TOKEN>>} '.libraries += {version_<<TOKEN>>: $version_<<TOKEN>>}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i <<TOKEN>> -v <<VERSION_TOKEN>>
 
 make_<<TOKEN>>: fetch_<<TOKEN>> configure_<<TOKEN>> build_<<TOKEN>> version_<<TOKEN>>

@@ -21,10 +21,11 @@ configure_icu:
         --disable-static
 
 build_icu:
+	/usr/local/bin/versions.py add -s libraries -i  -v ${VERSION_}
 	cd ${build_dir_icu}/source && \
 	CXXFLAGS="-std=c++11 ${FLAGS}" $(MAKE) install
 
 version_icu:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg icu ${VERSION_ICU} '.libraries += {icu: $$icu}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i icu -v ${VERSION_ICU}
 
 make_icu: fetch_icu configure_icu build_icu version_icu

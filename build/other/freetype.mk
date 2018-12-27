@@ -19,6 +19,6 @@ build_freetype:
 	$(MAKE) install
 
 version_freetype:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg freetype ${VERSION_FREETYPE} '.libraries += {freetype: $$freetype}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i freetype -v ${VERSION_FREETYPE}
 
 make_freetype: fetch_freetype configure_freetype build_freetype version_freetype

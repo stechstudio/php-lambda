@@ -17,6 +17,6 @@ build_glib:
 	$(MAKE) install-strip
 
 version_glib:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg glib ${VERSION_GLIB} '.libraries += {glib: $$glib}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i glib -v ${VERSION_GLIB}
 
 make_glib: fetch_glib configure_glib build_glib version_glib

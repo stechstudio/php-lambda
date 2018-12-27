@@ -19,6 +19,6 @@ build_fftw3:
 	$(MAKE) install
 
 version_fftw3:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg fftw3 ${VERSION_FFTW3} '.libraries += {fftw3: $$fftw3}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i fftw3 -v ${VERSION_FFTW3}
 
 make_fftw3: fetch_fftw3 configure_fftw3 build_fftw3 version_fftw3

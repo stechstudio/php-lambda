@@ -24,6 +24,6 @@ build_tiff:
 	$(MAKE) install-strip
 
 version_tiff:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg tiff ${VERSION_TIFF} '.libraries += {tiff: $$tiff}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i tiff -v ${VERSION_TIFF}
 
 make_tiff: fetch_tiff configure_tiff build_tiff version_tiff

@@ -35,6 +35,6 @@ build_vips:
 	$(MAKE) install-strip
 
 version_vips:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg vips ${VERSION_VIPS} '.libraries += {vips: $$vips}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i vips -v ${VERSION_VIPS}
 
 make_vips: fetch_vips configure_vips build_vips version_vips

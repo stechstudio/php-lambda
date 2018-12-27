@@ -20,6 +20,6 @@ build_openjpeg:
 	$(MAKE) install
 
 version_openjpeg:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg openjpeg ${VERSION_OPENJPEG} '.libraries += {openjpeg: $$openjpeg}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i openjpeg -v ${VERSION_OPENJPEG}
 
 make_openjpeg: fetch_openjpeg configure_openjpeg build_openjpeg version_openjpeg

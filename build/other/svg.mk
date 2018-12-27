@@ -44,6 +44,6 @@ build_svg:
 	$(MAKE) install-strip
 
 version_svg:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg svg ${VERSION_SVG} '.libraries += {svg: $$svg}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i svg -v ${VERSION_SVG}
 
 make_svg: fetch_svg configure_svg build_svg version_svg

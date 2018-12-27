@@ -32,6 +32,6 @@ build_cairo:
 	$(MAKE) install-strip
 
 version_cairo:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg cairo ${VERSION_CAIRO} '.libraries += {cairo: $$cairo}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i cairo -v ${VERSION_CAIRO}
 
 make_cairo: fetch_cairo configure_cairo build_cairo version_cairo

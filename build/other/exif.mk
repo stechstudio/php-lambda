@@ -20,6 +20,6 @@ build_exif:
 	$(MAKE) install
 
 version_exif:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg exif ${VERSION_EXIF} '.libraries += {exif: $$exif}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i exif -v ${VERSION_EXIF}
 
 make_exif: fetch_exif configure_exif build_exif version_exif

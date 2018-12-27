@@ -20,6 +20,6 @@ build_gsf:
 	$(MAKE) install-strip
 
 version_gsf:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg gsf ${VERSION_GSF} '.libraries += {gsf: $$gsf}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i gsf -v ${VERSION_GSF}
 
 make_gsf: fetch_gsf configure_gsf build_gsf version_gsf

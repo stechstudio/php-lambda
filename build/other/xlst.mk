@@ -19,6 +19,6 @@ build_xslt:
 	$(MAKE) install-strip
 
 version_xslt:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg xslt ${VERSION_XLST} '.libraries += {xslt: $$xslt}' > ${VERSIONS_FILE}
+	/usr/local/bin/versions.py add -s libraries -i xslt -v ${VERSION_XLST}
 
 make_xslt: fetch_xslt configure_xslt build_xslt version_xslt

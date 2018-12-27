@@ -19,10 +19,11 @@ configure_pcre:
         --enable-pcregrep-libz            
 
 build_pcre:
+	/usr/local/bin/versions.py add -s libraries -i  -v ${VERSION_}
 	cd ${build_dir_pcre} && \
 	$(MAKE) install 
 
 version_pcre:
-	cat ${VERSIONS_FILE} | ${JQ} --unbuffered --arg pcre ${VERSION_PCRE} '.libraries += {pcre: $$pcre}' > ${VERSIONS_FILE}
+/usr/local/bin/versions.py add -s libraries -i pcre -v ${VERSION_PCRE}
 
 make_pcre: fetch_pcre configure_pcre build_pcre version_pcre
