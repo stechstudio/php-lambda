@@ -58,6 +58,8 @@ configure_php:
         --with-iconv \
         --with-mysqli=mysqlnd \
         --with-pdo-mysql=mysqlnd \
+        --with-pgsql=${TARGET} \
+        --with-pdo-pgsql=${TARGET} \
         --with-openssl=${TARGET} \
         --with-openssl-dir=${TARGET}  \
         --with-libxml-dir=${TARGET}  \
