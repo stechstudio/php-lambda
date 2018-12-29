@@ -13,12 +13,12 @@ configure_php:
 	${build_dir_php}/buildconf --force && \
 	CPPFLAGS="-I${TARGET}/include -I/usr/include" ${build_dir_php}/configure \
         --prefix=${TARGET} \
-        --with-libdir=lib64 \
         --exec-prefix=${TARGET} \
+        --with-libdir=lib64 \
         --enable-option-checking=fatal \
         --with-config-file-path=${TARGET}/etc/php \
         --with-config-file-scan-dir=${TARGET}/etc/php/config.d:/var/task/php/config.d \
-        --disable-fpm \
+        --enable-fpm \
         --enable-cgi \
         --enable-cli \
         --disable-phpdbg \
@@ -33,6 +33,7 @@ configure_php:
         --enable-ftp \
         --enable-gd-jis-conv \
         --enable-hash \
+        --enable-intl \
         --enable-json \
         --enable-libxml \
         --enable-mbstring \
@@ -52,10 +53,13 @@ configure_php:
         --enable-tokenizer \
         --enable-xml \
         --enable-xmlwriter \
+        --enable-zip \
         --with-curl \
         --with-gd \
         --with-gmp \
         --with-iconv \
+        --with-mhash \
+        --with-readline \
         --with-mysqli=mysqlnd \
         --with-pdo-mysql=mysqlnd \
         --with-pgsql=${TARGET} \
@@ -67,18 +71,17 @@ configure_php:
         --with-png-dir=${TARGET}  \
         --with-jpeg-dir=${TARGET} \
         --with-zlib-dir=${TARGET} \
-        --enable-zip \
-        --with-zlib=${TARGET} \
-        --with-readline \
-        --without-pear
+        --with-sodium=${TARGET} \
+        --with-zlib=${TARGET}
 
 build_php:
 	cd ${build_dir_php} && \
 	$(MAKE) && \
 	$(MAKE) install && \
 	mkdir -p ${TARGET}/etc/php  && \
-    cp php.ini-production ${TARGET}/etc/php/php.ini && \
-    rm -f /opt/bref/bin/phar*
+    cp php.ini-production ${TARGET}/etc/php/php.ini
+	/usr/local/bin/pear.sh
+
 
 version_php:
 	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/php -v ${VERSION_PHP}
