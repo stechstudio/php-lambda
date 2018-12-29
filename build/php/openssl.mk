@@ -23,7 +23,7 @@ build_openssl:
 	cd ${build_dir_openssl} && \
 	$(MAKE) install
 	/usr/bin/curl -k -o ${CA_BUNDLE} ${CA_BUNDLE_SOURCE}
-	
+
 version_openssl:
 	/usr/local/bin/versions.py add -s libraries -i openssl -v ${VERSION_OPENSSL}
 	/usr/local/bin/versions.py add -s executables -i /opt/bref/bin/c_rehash -v ${VERSION_OPENSSL}
