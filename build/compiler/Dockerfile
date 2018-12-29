@@ -1,11 +1,22 @@
 FROM amazonlinux:2017.03 as compiler
 LABEL authors="Bubba Hines <bubba@stechstudio.com>"
 
-# Working Directory
-WORKDIR /layer
-
 ENV DEPS="/deps" \
     TARGET="/opt/bref"
+
+RUN mkdir -p ${DEPS}  \
+    ${TARGET}/bin \
+    ${TARGET}/doc \
+    ${TARGET}/etc \
+    ${TARGET}/include \
+    ${TARGET}/lib \
+    ${TARGET}/lib64 \
+    ${TARGET}/libexec \
+    ${TARGET}/sbin \
+    ${TARGET}/share
+
+# Working Directory
+WORKDIR ${TARGET}
 
 # Lambda is based on 2017.03. Lock YUM to that release version.
 RUN sed -i 's/releasever=latest/releaserver=2017.03/' /etc/yum.conf
@@ -15,10 +26,12 @@ RUN yum makecache
 RUN yum groupinstall -y "Development Tools"  --setopt=group_package_types=mandatory,default
 RUN yum install -y  jq \
                     gperf \
+                    expect \
                     gtk-doc \
                     texlive \
                     python35 \
                     docbook2X \
+                    findutils \
                     python35-pip
 
 RUN yum clean all
@@ -62,16 +75,3 @@ ENV \
     CMAKE='/usr/local/bin/cmake' \
     MESON='/usr/local/bin/meson' \
     NINJA='/usr/local/bin/ninja'
-
-RUN mkdir -p ${DEPS}  \
-             ${TARGET}/bin \
-             ${TARGET}/doc \
-             ${TARGET}/etc \
-             ${TARGET}/include \
-             ${TARGET}/lib \
-             ${TARGET}/lib64 \
-             ${TARGET}/libexec \
-             ${TARGET}/sbin \
-             ${TARGET}/share
-
-RUN echo '{"libraries":{},"extensions":{}}' > ${VERSIONS_FILE}

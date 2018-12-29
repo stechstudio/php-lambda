@@ -2,18 +2,17 @@ FROM sts/lambda/php:latest
 
 RUN mkdir -p /opt/bref/etc/php/config.d
 
-# https://github.com/krakjoe/apcu/releases
-ENV VERSION_APCU="5.1.16"
-COPY ./apcu.mk ${DEPS}/apcu.mk
-RUN /usr/bin/make -f ${DEPS}/apcu.mk
-RUN echo "extension = apcu.so" | tee -a /opt/bref/etc/php/config.d/apcu.ini
+RUN /opt/bref/bin/pecl install igbinary
+RUN echo "extension=igbinary.so" | tee -a /opt/bref/etc/php/config.d/igbinary.ini
 
+RUN /opt/bref/bin/pecl install mongodb
+RUN echo "extension=mongodb.so" | tee -a /opt/bref/etc/php/config.d/mongodb.ini
 
-# https://github.com/igbinary/igbinary/releases
-ENV VERSION_IGBINARY="2.0.8"
-COPY ./igbinary.mk ${DEPS}/igbinary.mk
-RUN /usr/bin/make -f ${DEPS}/igbinary.mk
-RUN echo -e "extension = igbinary.so\nigbinary.compact_strings=On" | tee -a /opt/bref/etc/php/config.d/igbinary.ini
+RUN yes '' | /opt/bref/bin/pecl install redis
+RUN echo "extension=redis.so" | tee -a /opt/bref/etc/php/config.d/redis.ini
+
+RUN no '' | /opt/bref/bin/pecl install apcu
+RUN echo "extension=apcu.so" | tee -a /opt/bref/etc/php/config.d/apcu.ini
 
 # https://github.com/ImageMagick/ImageMagick
 # Required to build the imagick extension

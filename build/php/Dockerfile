@@ -23,7 +23,7 @@ RUN /usr/bin/make -f ${DEPS}/zlib.mk
 #   - php
 ENV VERSION_OPENSSL="1.1.1a"
 ENV CA_BUNDLE_SOURCE="https://curl.haxx.se/ca/cacert.pem"
-ENV CA_BUNDLE="${TARGET}/etc/ssl/cacert.pem"
+ENV CA_BUNDLE="${TARGET}/ssl/cert.pem"
 COPY ./openssl.mk  ${DEPS}/openssl.mk 
 RUN /usr/bin/make -f ${DEPS}/openssl.mk 
 
@@ -66,6 +66,15 @@ RUN /usr/bin/make -f ${DEPS}/libzip.mk
 ENV VERSION_NASM="2.14"
 COPY ./nasm.mk ${DEPS}/nasm.mk
 RUN /usr/bin/make -f ${DEPS}/nasm.mk
+
+# https://github.com/unicode-org/icu/releases
+# Needs:
+#   - None
+# Needed by:
+#   - PHP
+ENV VERSION_ICU="63.1"
+COPY ./icu.mk ${DEPS}/icu.mk
+RUN /usr/bin/make -f ${DEPS}/icu.mk
 
 # https://github.com/GNOME/libxml2/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/libxml2.html
@@ -119,6 +128,15 @@ ENV VERSION_POSTGRES="9.6.11"
 COPY ./postgres.mk ${DEPS}/postgres.mk
 RUN /usr/bin/make -f ${DEPS}/postgres.mk
 
+# https://github.com/jedisct1/libsodium/releases
+# Needs:
+#   - 
+# Needed by:
+#   - php
+ENV VERSION_SODIUM="1.0.16"
+COPY ./sodium.mk ${DEPS}/sodium.mk
+RUN /usr/bin/make -f ${DEPS}/sodium.mk
+
 
 # https://github.com/php/php-src/releases
 # http://www.linuxfromscratch.org/blfs/view/svn/general/php.html
@@ -137,18 +155,10 @@ RUN /usr/bin/make -f ${DEPS}/postgres.mk
 #build php
 ENV VERSION_PHP="7.3.0"
 COPY ./php.mk ${DEPS}/php.mk
-RUN /usr/bin/make -f ${DEPS}/php.mk 
-
-# https://github.com/jcupitt/php-vips-ext/releases
-# https://github.com/jcupitt/php-vips-ext
-# Needs:
-#   - vips
-#   - php
-# Needed by:
-#   - none
-# ENV VERSION_PHPVIPS="1.0.8"
-# COPY ./extensions/phpvips.mk ${DEPS}/phpvips.mk
-# RUN /usr/bin/make -f ${DEPS}/phpvips.mk
+COPY ./helpers/pear.sh /usr/local/bin/pear.sh
+RUN /usr/bin/make -f ${DEPS}/php.mk fetch_php
+RUN /usr/bin/make -f ${DEPS}/php.mk configure_php
+RUN /usr/bin/make -f ${DEPS}/php.mk build_php
 
 FROM sts/lambda/compiler:latest
 WORKDIR ${TARGET}
