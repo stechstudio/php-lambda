@@ -1,3 +1,5 @@
 *.tar.gz
 .idea
 .DS_Store
+export
+php.ini
